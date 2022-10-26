@@ -116,20 +116,32 @@ tdmaze = mazeto3d();
 <script>
 /* main */
 
-let sTime = Date.now();
+// 初期化
 let tddraw = new tdDRAW();
-tddraw.setCamera([[-10,-10,20],[45,-30],[1920,1080]]);
+tddraw.setCamera([[1.2,1.2,0.7],[45,0],[1920,1080]]);
 tddraw.setObj(tdmaze)
-console.log(tddraw)
-tddraw.getImg()
-let eTime = Date.now();
-console.log(eTime-sTime);
-
 var co = document.getElementById("imgOut");
 var ctx = co.getContext('2d');
-
 co.height=tddraw.display[1];co.width=tddraw.display[0];
-ctx.putImageData(tddraw.getImg(),0,0);
 
+
+// 計測
+let eTime;
+function start() {
+
+    let sTime = Date.now();
+
+    tddraw.getImg();
+
+    eTime = Date.now();
+    console.log("レンダリング終了",eTime-sTime,1000/(eTime-sTime));
+
+    ctx.putImageData(tddraw.getImg(),0,0);
+
+    eTime = Date.now();
+    console.log("画像表示終了",eTime-sTime,1000/(eTime-sTime));
+
+}
+start();
 
 </script>

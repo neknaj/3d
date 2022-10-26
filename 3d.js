@@ -29,6 +29,7 @@ class tdDRAW {
         }
         let polygons = this.obj;
         let vl = this.VNormalized([40,50,50]); // 平行光源
+        this.trifv = [Math.sin(this.camangle[0]),Math.cos(this.camangle[0]),Math.sin(-this.camangle[1]),Math.cos(this.camangle[1])];
         for (let i=0;i<polygons.length;i++) {
             let t = polygons[i];
 
@@ -74,16 +75,11 @@ class tdDRAW {
         this.obj = this.sortP(this.obj);
     }
     pos_3t2d(pos) {
-        let cp = this.campos;let ca = this.camangle;
-        let p1 = [pos[0]-cp[0],pos[1]-cp[1],pos[2]-cp[2]];
-        p1 = this.rotate3d_z(p1,ca[0]);
-        p1 = this.rotate3d_x(p1,-ca[1]);
+        let p1 = this.rotate3d_x(this.rotate3d_z([pos[0]-this.campos[0],pos[1]-this.campos[1],pos[2]-this.campos[2]]));
         let l = Math.abs(14/(p1[1]));
         let s = this.display[0]/10;
         let d = [p1[0]*l*s+this.display[0]/2,-p1[2]*l*s+this.display[1]/2];
-        let infront = false;
-        if (p1[1]<0) {infront = true };
-        return [Math.floor(d[0]),Math.floor(d[1]),infront];
+        return [Math.floor(d[0]),Math.floor(d[1]),p1[1]<0];
     }
     sortP(ps) {
         let psl = ps.length;
@@ -145,18 +141,10 @@ class tdDRAW {
         let ca = c[0]*a[1]-c[1]*a[0];
         return ab<=0&&bc<=0&&ca<=0;
     };
-    rotate3d_x(pos,r_x) { // x軸のみの回転
-        let _x1 = pos[0];let _y1 = pos[1];let _z1 = pos[2];
-        let _x3 = _x1;
-        let cosrx = Math.cos(r_x);let sinrx = Math.sin(r_x);
-        let _y3 = _y1*cosrx-_z1*sinrx;let _z3 = _y1*sinrx+_z1*cosrx;
-        return [_x3,_y3,_z3];
+    rotate3d_x(pos) { // x軸のみの回転
+        return [pos[0],pos[1]*this.trifv[3]-pos[2]*this.trifv[2],pos[1]*this.trifv[2]+pos[2]*this.trifv[3]];
     }
-    rotate3d_z(pos,r_z) { // z軸のみの回転
-        let _x1 = pos[0];let _y1 = pos[1];let _z1 = pos[2];
-        let _z3 = _z1;
-        let cosrz = Math.cos(r_z);let sinrz = Math.sin(r_z);
-        let _x3 = _x1*cosrz-_y1*sinrz;let _y3 = _x1*sinrz+_y1*cosrz;
-        return [_x3,_y3,_z3];
+    rotate3d_z(pos) { // z軸のみの回転
+        return [pos[0]*this.trifv[1]-pos[1]*this.trifv[0],pos[0]*this.trifv[0]+pos[1]*this.trifv[1],pos[2]];
     }
 }

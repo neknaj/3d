@@ -100,9 +100,7 @@ class tdDRAW {
                 }
                 j++;
             }
-            if (!sorted) {
-                break;
-            }
+            if (!sorted) { break;}
             i++;
         }
         return ps;
@@ -160,26 +158,5 @@ class tdDRAW {
         let cosrz = Math.cos(r_z);let sinrz = Math.sin(r_z);
         let _x3 = _x1*cosrz-_y1*sinrz;let _y3 = _x1*sinrz+_y1*cosrz;
         return [_x3,_y3,_z3];
-    }
-    rotate3d(pos,r_x,r_y,r_z) { // 回転
-        let _x1 = pos[0];let _y1 = pos[1];let _z1 = pos[2];
-        let cosrx = Math.cos(r_x);let sinrx = Math.sin(r_x);
-        let cosry = Math.cos(r_y);let sinry = Math.sin(r_y);
-        let cosrz = Math.cos(r_z);let sinrz = Math.sin(r_z);
-        let _y2 = _y*cosrx-_z*sinrx;_z1 = _y*sinrx+_z*cosrx;
-        let _x2 = _x1*cosry+_z1*sinry;let _z3 = -_x1*sinry+_z1*cosry;
-        let _x3 = _x2*cosrz-_y2*sinrz;let _y3 = _x2*sinrz+_y2*cosrz;
-        return [_x3,_y3,_z3];
-    }
-    rotate2d(pos,r) {
-        var _x = pos[0];_y = pos[1];
-        let cosr = Math.cos(r);let sinr = Math.sin(r);
-        var x = _x*cosr-_y*sinr;var y = _x*sinr+_y*cosr;
-        return [x,y];
-    }
-    factonal(n) {
-        let res = 1;
-        for (let i = 2; i <= n; i++) { res *= i;}
-        return res;
     }
 }

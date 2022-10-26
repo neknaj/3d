@@ -20,6 +20,7 @@ tddraw.setObj(room);
 var co = document.getElementById("imgOut");
 var ctx = co.getContext('2d');
 co.height=tddraw.display[1];co.width=tddraw.display[0];
+ctx.globalCompositeOperation = 'copy';
 
 
 // 計測
@@ -28,12 +29,9 @@ function start() {
 
     let sTime = Date.now();
 
-    tddraw.getImg();
+    img = tddraw.getImg();
 
-    eTime = Date.now();
-    console.log("レンダリング終了",eTime-sTime,1000/(eTime-sTime));
-
-    ctx.putImageData(tddraw.getImg(),0,0);
+    ctx.putImageData(img,0,0);
 
     eTime = Date.now();
     console.log("画像表示終了",eTime-sTime,1000/(eTime-sTime));

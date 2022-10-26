@@ -116,11 +116,14 @@ tdmaze = mazeto3d();
 <script>
 /* main */
 
+let sTime = Date.now();
 let tddraw = new tdDRAW();
 tddraw.setCamera([[-10,-10,20],[45,-30],[1920,1080]]);
 tddraw.setObj(tdmaze)
 console.log(tddraw)
 tddraw.getImg()
+let eTime = Date.now();
+console.log(eTime-sTime);
 
 var co = document.getElementById("imgOut");
 var ctx = co.getContext('2d');

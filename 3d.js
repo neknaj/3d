@@ -13,7 +13,7 @@ class tdDRAW {
     }
     setCamera(camera) {
         this.campos = camera[0];
-        this.camangle = camera[1];
+        this.camangle = [camera[1][0]*(Math.PI/180),camera[1][1]*(Math.PI/180)];
         this.display = camera[2];
     }
 
@@ -150,7 +150,6 @@ class tdDRAW {
     rotate3d_x(pos,r_x) { // x軸のみの回転
         let _x1 = pos[0];let _y1 = pos[1];let _z1 = pos[2];
         let _x3 = _x1;
-        r_x = r_x*(Math.PI/180);
         let cosrx = Math.cos(r_x);let sinrx = Math.sin(r_x);
         let _y3 = _y1*cosrx-_z1*sinrx;let _z3 = _y1*sinrx+_z1*cosrx;
         return [_x3,_y3,_z3];
@@ -158,14 +157,12 @@ class tdDRAW {
     rotate3d_z(pos,r_z) { // z軸のみの回転
         let _x1 = pos[0];let _y1 = pos[1];let _z1 = pos[2];
         let _z3 = _z1;
-        r_z = r_z*(Math.PI/180);
         let cosrz = Math.cos(r_z);let sinrz = Math.sin(r_z);
         let _x3 = _x1*cosrz-_y1*sinrz;let _y3 = _x1*sinrz+_y1*cosrz;
         return [_x3,_y3,_z3];
     }
     rotate3d(pos,r_x,r_y,r_z) { // 回転
         let _x1 = pos[0];let _y1 = pos[1];let _z1 = pos[2];
-        r_x = r_x*(Math.PI/180);r_y = r_y*(Math.PI/180);r_z = r_z*(Math.PI/180);
         let cosrx = Math.cos(r_x);let sinrx = Math.sin(r_x);
         let cosry = Math.cos(r_y);let sinry = Math.sin(r_y);
         let cosrz = Math.cos(r_z);let sinrz = Math.sin(r_z);
@@ -176,7 +173,6 @@ class tdDRAW {
     }
     rotate2d(pos,r) {
         var _x = pos[0];_y = pos[1];
-        r = r*(Math.PI/180);
         let cosr = Math.cos(r);let sinr = Math.sin(r);
         var x = _x*cosr-_y*sinr;var y = _x*sinr+_y*cosr;
         return [x,y];

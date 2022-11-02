@@ -48,17 +48,17 @@ function loadfile(text) {
 }
 function arrayout(data) {
     let text = "";
-    text += "[\n"
+    text += "loadedobj = [\n"
     for (let poly of data) {
         text += ` [ [${poly[0].toString()}], [${poly[1].toString()}], [${poly[2].toString()}], [255,255,255] ],\n`
     }
-    text += "\n];"
+    text += "];"
     document.getElementById("arrayOut").innerHTML = text;
 }
 
 // 3D
 var tddraw = new tdDRAW();
-tddraw.setCamera([[20,20,20],[225,-30],[1920,1080]]);
+tddraw.setCamera([[10,10,10],[225,-32],[1920,1080]]);
 //tddraw.setObj();
 var co = document.getElementById("imgOut");
 var ctx = co.getContext('2d');

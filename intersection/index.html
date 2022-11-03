@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>2d paint soft</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <div id="main">
+            <canvas id="output"></canvas>
+        </div>
+    </body>
+</html>
+<script src="./paint.js"></script>
+<script src="./2d.js"></script>
+<script>
+
+function is_p(l1, l2) { // intersection point from 2 lines
+    if (l1[0][0]==l1[1][0]) {l1[0][0]+=0.01;}
+    if (l2[0][0]==l2[1][0]) {l2[0][0]+=0.01;}
+    let a1 = (l1[1][1]-l1[0][1])/(l1[1][0]-l1[0][0]);
+    let b1 = l1[0][1]-a1*l1[0][0];
+    let a2 = (l2[1][1]-l2[0][1])/(l2[1][0]-l2[0][0]);
+    let b2 = l2[0][1]-a2*l2[0][0];
+    let x = (b2-b1)/(a1-a2);
+    let y = a1*x+b1;
+    return [x,y];
+};
+
+a = [10,20]
+b = [90,80]
+c = [10,50]
+d = [90,10]
+
+
+a = [90,20]
+b = [10,80]
+c = [10,50]
+d = [90,30]
+
+
+p = is_p([a,b],[c,d])
+
+paint = new Paint("output")
+paint.setup(100,100)
+
+paint.paintLine([a[0],100-a[1]],[b[0],100-b[1]],[255,0,0])
+paint.paintLine([c[0],100-c[1]],[d[0],100-d[1]],[0,0,255])
+paint.paintFilledCircle(Math.floor(p[0]),100-Math.floor(p[1]),4,[0,100,100])
+
+paint.update()
+
+</script>
+<style>
+    #output {
+        width: 500px;
+        image-rendering: pixelated;
+        border: 1px solid black;
+    }
+</style>

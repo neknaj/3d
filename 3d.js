@@ -19,7 +19,7 @@ class tdDRAW {
     }
 
     getImg() {
-        this.sortPolygon();
+        //this.sortPolygon();
         this.frame++;
         let x = this.display[0];
         let y = this.display[1];
@@ -66,9 +66,9 @@ class tdDRAW {
                             let c = this.length3d([this.campos,t[2]]);
                             let d = b+(this.length2d([p2,td])/this.length2d([p2,p3]))*(c-b);
                             let p = a+(this.length2d([p1,[ix,iy]])/this.length2d([p1,td]))*(d-a);
-                            if (i==100) {
-                                console.log(p2,p3,a,b,c,td,this.length2d([p2,td]),this.length2d([p2,p3]),this.length2d([p2,td])/this.length2d([p2,p3]),d)
-                            }
+                            // if (i==100) {
+                            //     console.log(p2,p3,a,b,c,td,this.length2d([p2,td]),this.length2d([p2,p3]),this.length2d([p2,td])/this.length2d([p2,p3]),d)
+                            // }
                             // bd=this.length2d([p2,pos]);dc=this.length2d([p2,pos]);ap=this.length2d([p1,[ix,iy]]);pd=this.length2d([pos,[ix,iy]]);
     
                             if (zbuf[idex]>p) {
@@ -129,11 +129,14 @@ class tdDRAW {
     }
     
     is_p(l1, l2) { // intersection point from 2 lines
-        // 参考: ShanaBrain https://shanabrian.com/web/javascript/get-intersection-line-segments.php
-        // 変更: 変数=>関数 連想配列=>配列 var=>let 変数名の変更 空白や改行の変更 判定の消去
-        let x0=l1[0][0],y0=l1[0][1],x1=l1[1][0],y1=l1[1][1],x2=l2[0][0],y2=l2[0][1],x3=l2[1][0],y3=l2[1][1];
-        let a0=(y1-y0)/(x1-x0),a1=(y3-y2)/(x3-x2);
-        let x=(a0*x0-y0-a1*x2+y2)/(a0-a1),y=(y1-y0)/(x1-x0)*(x-x0)+y0;
+        if (l1[0][0]==l1[1][0]) {l1[0][0]+=0.01;}
+        if (l2[0][0]==l2[1][0]) {l2[0][0]+=0.01;}
+        let a1 = (l1[1][1]-l1[0][1])/(l1[1][0]-l1[0][0]);
+        let b1 = l1[0][1]-a1*l1[0][0];
+        let a2 = (l2[1][1]-l2[0][1])/(l2[1][0]-l2[0][0]);
+        let b2 = l2[0][1]-a2*l2[0][0];
+        let x = (b2-b1)/(a1-a2);
+        let y = a1*x+b1;
         return [x,y];
     };
     squared_length3d(pos) {

@@ -25,12 +25,12 @@ class tdDRAW {
         let y = this.display[1];
         let maxlen = 100;
         let iarr = new Uint8ClampedArray(x*y*4).fill(0);
-        let zbuf = new Uint8Array(x*y).fill(maxlen);
+        let zbuf = new Array(x*y).fill(maxlen);
         for (let i = 0; i < x*y; i++) {
             iarr[i*4+3] = 255;
         }
         let polygons = this.obj;
-        let vl = this.VNormalized([40,50,50]); // 平行光源
+        let vl = this.VNormalized([40,50,20]); // 平行光源
         this.trifv = [Math.sin(this.camangle[0]),Math.cos(this.camangle[0]),Math.sin(-this.camangle[1]),Math.cos(this.camangle[1])];
         for (let i=0;i<polygons.length;i++) {
             let t = polygons[i];

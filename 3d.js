@@ -66,12 +66,8 @@ class tdDRAW {
                             let c = this.length3d([this.campos,t[2]]);
                             let d = b+(this.length2d([p2,td])/this.length2d([p2,p3]))*(c-b);
                             let p = a+(this.length2d([p1,[ix,iy]])/this.length2d([p1,td]))*(d-a);
-                            // if (i==100) {
-                            //     console.log(p2,p3,a,b,c,td,this.length2d([p2,td]),this.length2d([p2,p3]),this.length2d([p2,td])/this.length2d([p2,p3]),d)
-                            // }
-                            // bd=this.length2d([p2,pos]);dc=this.length2d([p2,pos]);ap=this.length2d([p1,[ix,iy]]);pd=this.length2d([pos,[ix,iy]]);
-    
-                            if (zbuf[idex]>p) {
+
+                            if (zbuf[idex]>=p) {
                                 zbuf[idex] = p;
                                 let index = idex*4;
                                 light = (Math.max(angl,angl*0.1)*0.9+0.3)*(1000/(p**2+1000)); // 面と平行光源の角度

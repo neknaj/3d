@@ -23,8 +23,9 @@ class tdDRAW {
         this.frame++;
         let x = this.display[0];
         let y = this.display[1];
+        let maxlen = 100;
         let iarr = new Uint8ClampedArray(x*y*4).fill(0);
-        let zbuf = new Uint8Array(x*y).fill(0);
+        let zbuf = new Uint8Array(x*y).fill(maxlen);
         for (let i = 0; i < x*y; i++) {
             iarr[i*4+3] = 255;
         }
@@ -56,13 +57,28 @@ class tdDRAW {
             for (let iy = ymin; iy < ymax; iy++) {
                 for (let ix = xmin; ix < xmax; ix++) {
                     let idex = iy*x+ix; // 描画するアドレス
-                    if (zbuf[idex]==0) { // 既に描画されていない確認
+                    if (true) { // 既に描画されていない確認
                         if (this.inclusion([ix,iy],[p1,p2,p3])) { // 三角形の内外判定
-                            zbuf[idex] = 1; // ピクセルの描画済みフラグ
-                            let index = idex*4;
-                            iarr[index+0] = t[3][0]*light; // 赤の描画
-                            iarr[index+1] = t[3][1]*light; // 緑の描画
-                            iarr[index+2] = t[3][2]*light; // 青の描画
+                            let td = this.is_p( [p1,[ix,iy]],[p2,p3]);
+
+                            let a = this.length3d([this.campos,t[0]]);
+                            let b = this.length3d([this.campos,t[1]]);
+                            let c = this.length3d([this.campos,t[2]]);
+                            let d = b+(this.length2d([p2,td])/this.length2d([p2,p3]))*(c-b);
+                            let p = a+(this.length2d([p1,[ix,iy]])/this.length2d([p1,td]))*(d-a);
+                            if (i==100) {
+                                console.log(p2,p3,a,b,c,td,this.length2d([p2,td]),this.length2d([p2,p3]),this.length2d([p2,td])/this.length2d([p2,p3]),d)
+                            }
+                            // bd=this.length2d([p2,pos]);dc=this.length2d([p2,pos]);ap=this.length2d([p1,[ix,iy]]);pd=this.length2d([pos,[ix,iy]]);
+    
+                            if (zbuf[idex]>p) {
+                                zbuf[idex] = p;
+                                let index = idex*4;
+                                light = (Math.max(angl,angl*0.1)*0.9+0.3)*(1000/(p**2+1000)); // 面と平行光源の角度
+                                iarr[index+0] = t[3][0]*light; // 赤の描画
+                                iarr[index+1] = t[3][1]*light; // 緑の描画
+                                iarr[index+2] = t[3][2]*light; // 青の描画
+                            }
                         }
                     }
                 }
@@ -111,11 +127,23 @@ class tdDRAW {
     gcot(t3ds) {
         return [(t3ds[0][0]+t3ds[1][0]+t3ds[2][0])/3,(t3ds[0][1]+t3ds[1][1]+t3ds[2][1])/3,(t3ds[0][2]+t3ds[1][2]+t3ds[2][2])/3];
     }
+    
+    is_p(l1, l2) { // intersection point from 2 lines
+        // 参考: ShanaBrain https://shanabrian.com/web/javascript/get-intersection-line-segments.php
+        // 変更: 変数=>関数 連想配列=>配列 var=>let 変数名の変更 空白や改行の変更 判定の消去
+        let x0=l1[0][0],y0=l1[0][1],x1=l1[1][0],y1=l1[1][1],x2=l2[0][0],y2=l2[0][1],x3=l2[1][0],y3=l2[1][1];
+        let a0=(y1-y0)/(x1-x0),a1=(y3-y2)/(x3-x2);
+        let x=(a0*x0-y0-a1*x2+y2)/(a0-a1),y=(y1-y0)/(x1-x0)*(x-x0)+y0;
+        return [x,y];
+    };
     squared_length3d(pos) {
         return (pos[0][0]-pos[1][0])**2+(pos[0][1]-pos[1][1])**2+(pos[0][2]-pos[1][2])**2;
     }
     length3d(pos) {
         return Math.sqrt((pos[0][0]-pos[1][0])**2+(pos[0][1]-pos[1][1])**2+(pos[0][2]-pos[1][2])**2);
+    }
+    length2d(pos) {
+        return Math.sqrt( (pos[0][0]-pos[1][0])**2+(pos[0][1]-pos[1][1])**2 );
     }
 
     VCProduct(a,b) { // Vector-Cross-Product ベクトルの外積

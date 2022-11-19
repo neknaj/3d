@@ -19,7 +19,7 @@ class tdDRAW {
     }
 
     getImg() {
-        //this.sortPolygon();
+        this.sortPolygon();
         this.frame++;
         let x = this.display[0];
         let y = this.display[1];
@@ -106,7 +106,7 @@ class tdDRAW {
         let bu;let i=0;
         while (i<psl) {
             let j=0;let jm = psl-i-1;
-            while (j<jm) {
+            while (j<jm||j<100) {
                 if (ps[j][7]>ps[j+1][7]) {
                     bu = ps[j+1];
                     ps[j+1] = ps[j];

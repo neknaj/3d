@@ -131,14 +131,13 @@ class tdDRAW {
     }
     
     is_p(l1, l2) { // intersection point from 2 lines
-        if (l1[0][0]==l1[1][0]) {l1[0][0]+=0.01;}
-        if (l2[0][0]==l2[1][0]) {l2[0][0]+=0.01;}
-        let a1 = (l1[1][1]-l1[0][1])/(l1[1][0]-l1[0][0]);
-        let b1 = l1[0][1]-a1*l1[0][0];
-        let a2 = (l2[1][1]-l2[0][1])/(l2[1][0]-l2[0][0]);
-        let b2 = l2[0][1]-a2*l2[0][0];
-        let x = (b2-b1)/(a1-a2);
-        let y = a1*x+b1;
+        // 参考 https://mf-atelier.sakura.ne.jp/mf-atelier2/a1/
+        let div = (l1[1][1]-l1[0][1])*(l2[1][0]-l2[0][0])-(l1[1][0]-l1[0][0])*(l2[1][1]-l2[0][1])
+        if (div==0) {return [null,null]}
+        let d1 = l2[0][1]*l2[1][0]-l2[0][0]*l2[1][1]
+        let d2 = l1[0][1]*l1[1][0]-l1[0][0]*l1[1][1]
+        let x = (d1*(l1[1][0]-l1[0][0])-d2*(l2[1][0]-l2[0][0]))/div
+        let y = (d1*(l1[1][1]-l1[0][1])-d2*(l2[1][1]-l2[0][1]))/div
         return [x,y];
     };
     squared_length3d(pos) {

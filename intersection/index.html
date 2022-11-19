@@ -15,14 +15,13 @@
 <script>
 
 function is_p(l1, l2) { // intersection point from 2 lines
-    if (l1[0][0]==l1[1][0]) {l1[0][0]+=0.01;}
-    if (l2[0][0]==l2[1][0]) {l2[0][0]+=0.01;}
-    let a1 = (l1[1][1]-l1[0][1])/(l1[1][0]-l1[0][0]);
-    let b1 = l1[0][1]-a1*l1[0][0];
-    let a2 = (l2[1][1]-l2[0][1])/(l2[1][0]-l2[0][0]);
-    let b2 = l2[0][1]-a2*l2[0][0];
-    let x = (b2-b1)/(a1-a2);
-    let y = a1*x+b1;
+    // 参考 https://mf-atelier.sakura.ne.jp/mf-atelier2/a1/
+    let div = (l1[1][1]-l1[0][1])*(l2[1][0]-l2[0][0])-(l1[1][0]-l1[0][0])*(l2[1][1]-l2[0][1])
+    if (div==0) {return [null,null]}
+    let d1 = l2[0][1]*l2[1][0]-l2[0][0]*l2[1][1]
+    let d2 = l1[0][1]*l1[1][0]-l1[0][0]*l1[1][1]
+    let x = (d1*(l1[1][0]-l1[0][0])-d2*(l2[1][0]-l2[0][0]))/div
+    let y = (d1*(l1[1][1]-l1[0][1])-d2*(l2[1][1]-l2[0][1]))/div
     return [x,y];
 };
 
@@ -32,28 +31,28 @@ c = [10,50]
 d = [90,10]
 
 
-a = [90,20]
-b = [10,80]
+a = [300,20]
+b = [350,120]
 c = [10,50]
-d = [90,30]
+d = [400,100]
 
 
 p = is_p([a,b],[c,d])
+console.log(p)
 
 paint = new Paint("output")
-paint.setup(100,100)
+paint.setup(500,500)
 
-paint.paintLine([a[0],100-a[1]],[b[0],100-b[1]],[255,0,0])
-paint.paintLine([c[0],100-c[1]],[d[0],100-d[1]],[0,0,255])
-paint.paintFilledCircle(Math.floor(p[0]),100-Math.floor(p[1]),4,[0,100,100])
+paint.paintLine([Math.floor(a[0]),Math.floor(500-a[1])],[Math.floor(b[0]),Math.floor(500-b[1])],[255,0,0])
+paint.paintLine([Math.floor(c[0]),Math.floor(500-c[1])],[Math.floor(d[0]),Math.floor(500-d[1])],[0,0,255])
+paint.paintFilledCircle(Math.floor(p[0]),500-Math.floor(p[1]),4,[0,100,100])
 
 paint.update()
 
 </script>
 <style>
     #output {
-        width: 500px;
-        image-rendering: pixelated;
+        width: 700px;
         border: 1px solid black;
     }
 </style>

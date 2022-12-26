@@ -35,16 +35,11 @@ LRESULT CALLBACK WndProc(HWND hwnd , UINT msg , WPARAM wp , LPARAM lp) {
 		bmpInfo.bmiHeader.biPlanes=1;
 		bmpInfo.bmiHeader.biBitCount=32;
 		bmpInfo.bmiHeader.biCompression=BI_RGB;
-		lpPixel = tddraw.getImg(width,height); // 3D
-		// 上書き描画
-		// for(int y=100;y<=500;y++){
-		// 	for(int x=100;x<=500;x++){
-		// 		lpPixel[(x+y*width)*4+0]=255;
-		// 	}
-		// }
-		//
 		hdc=BeginPaint(hwnd,&ps);
-		SetDIBitsToDevice(hdc,0,0,width,height,0,0,0,height,lpPixel,&bmpInfo,DIB_RGB_COLORS);
+		{ // 3d
+			lpPixel = tddraw.getImg(width,height);
+			SetDIBitsToDevice(hdc,0,0,width,height,0,0,0,height,lpPixel,&bmpInfo,DIB_RGB_COLORS);
+		}
 		EndPaint(hwnd,&ps);
 		delete[] lpPixel;
 		return 0;
@@ -53,7 +48,7 @@ LRESULT CALLBACK WndProc(HWND hwnd , UINT msg , WPARAM wp , LPARAM lp) {
 }
 
 int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,PSTR lpCmdLine,int nCmdShow) {
-	std::cout << lpCmdLine << std::endl;
+	std::cout << "file: " << lpCmdLine << std::endl;
 	showobject = read(lpCmdLine);
 
 	HWND hwnd;
@@ -73,7 +68,7 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,PSTR lpCmdLine,in
 	if (!RegisterClass(&winc)) return -1;
 
 	hwnd = CreateWindow(
-		TEXT("app") , TEXT("3D on Desktop") ,
+		TEXT("app") , TEXT("sample_ncto") ,
 		WS_OVERLAPPEDWINDOW | WS_VISIBLE ,
 		CW_USEDEFAULT , CW_USEDEFAULT ,
 		500 , 400 , // window size

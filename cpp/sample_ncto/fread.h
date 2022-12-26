@@ -46,5 +46,6 @@ tdDrawObject read(char* fname)
         tdDrawPolygon poly = arraytopoly(rawd);
         readobj.insert(readobj.end(),poly);
     }
+    std::cerr << readobj.size() << " polygons roaded" << std::endl;
     return readobj;
 }

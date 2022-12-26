@@ -1,6 +1,5 @@
 # Neknaj 3D Library
-bem130が2022年の3月から7月ごろにかけて作っていた3D描画のプログラムを改良しつつ、  
-使いやすいようにclassにしてまとめたものです。  
+bem130が2022年の3月から7月ごろにかけて作っていた3D描画のプログラムを改良しつつ、使いやすいようにまとめたものです。  
 
 ## javascript
 ./js
@@ -65,9 +64,9 @@ image = tddraw.getImg();
 ## c++
 ./cpp
 ### オブジェクト
-オブジェクトは、ポリゴンの動的配列で表される
-ポリゴンは3つの座標と色で表される
-`tdDrawPolygon.distance`は使用されていない
+オブジェクトは、ポリゴンの動的配列で表される  
+ポリゴンは3つの座標と色で表される  
+`tdDrawPolygon.distance`は使用されていない  
 ```cpp
 struct tdDrawPolygon { // ポリゴンの定義
     std::array<long double,3> p1; // 1つめの頂点

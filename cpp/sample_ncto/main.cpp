@@ -53,7 +53,8 @@ LRESULT CALLBACK WndProc(HWND hwnd , UINT msg , WPARAM wp , LPARAM lp) {
 }
 
 int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,PSTR lpCmdLine,int nCmdShow) {
-	showobject = read();
+	std::cout << lpCmdLine << std::endl;
+	showobject = read(lpCmdLine);
 
 	HWND hwnd;
 	MSG msg;

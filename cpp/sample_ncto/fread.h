@@ -8,9 +8,9 @@
 tdDrawPolygon arraytopoly(std::array<long double,12> a) {
     return {{a[0],a[1],a[2]},{a[3],a[4],a[5]},{a[6],a[7],a[8]},{(unsigned char)a[9],(unsigned char)a[10],(unsigned char)a[11]}};
 }
-tdDrawObject read()
+tdDrawObject read(char* fname)
 {
-    std::ifstream ifs("./gpu.ncto");
+    std::ifstream ifs(fname);
     std::string str;
     tdDrawObject readobj = {};
     if (ifs.fail()) {

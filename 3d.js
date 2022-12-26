@@ -19,7 +19,7 @@ class tdDRAW {
     }
 
     getImg() {
-        this.sortPolygon();
+        //this.sortPolygon();
         this.frame++;
         let x = this.display[0];
         let y = this.display[1];

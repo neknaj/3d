@@ -11,6 +11,7 @@
         <button onclick="localfile()">load file - ASCII STL</button><br>
         <canvas id="imgOut"></canvas>
         <textarea id="arrayOut" readonly></textarea>
+        <textarea id="nctoOut" readonly></textarea>
     </body>
 </html>
 <script src="../3d.js"></script>
@@ -48,6 +49,7 @@ function loadfile(text) {
     console.log(data)
     tddraw.setObj(data);
     arrayout(data);
+    nctoout(data);
     start()
 }
 function arrayout(data) {
@@ -58,6 +60,13 @@ function arrayout(data) {
     }
     text += "];"
     document.getElementById("arrayOut").innerHTML = text;
+}
+function nctoout(data) {
+    let text = "";
+    for (let poly of data) {
+        text += `${poly[0].toString()},${poly[1].toString()},${poly[2].toString()},255,255,255\n`
+    }
+    document.getElementById("nctoOut").innerHTML = text;
 }
 
 // 3D
@@ -94,7 +103,7 @@ start();
         max-width: 100%;
         max-height: 100%;
     }
-    #arrayOut {
+    #arrayOut,#nctoOut {
         width: calc(100% - 7px);
         height: 50vh;
     }

@@ -20,8 +20,8 @@ LRESULT CALLBACK WndProc(HWND hwnd , UINT msg , WPARAM wp , LPARAM lp) {
 		PostQuitMessage(0);
 		return 0;
 	case WM_CREATE:
-		tddraw = tdDraw();
 		tddraw.setObj(showobject);
+		tddraw.setCamera({3,3,3},{225*(pi/180),-32*(pi/180)});
 		return 0;
 	case WM_PAINT:
 		GetWindowRect(hwnd, &rect);

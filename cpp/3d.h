@@ -18,25 +18,19 @@ struct tdDrawPolygon {
 };
 typedef std::vector<struct tdDrawPolygon> tdDrawObject;
 unsigned char* iarr;
+const long double pi = 3.14159;
 
 class tdDraw {
     public:
         std::array<long double,3> campos = {0,0,0};
-        long double camangle[2] = {0,0};
+        std::array<long double,2> camangle = {0,0};
         long double trifv[4];
         int display[2];
         tdDrawObject obj;
         int frame;
         typedef tdDrawPolygon poly;
-        long double pi = 3.14159;
         unsigned char sky[3] = {114, 174, 239};
         tdDraw() {
-            campos[0] = 5;
-            campos[1] = 5;
-            campos[2] = 5;
-            camangle[0] = 225*(pi/180);
-            camangle[1] = -32*(pi/180);
-
             frame = 0;
             obj = {};
             return;
@@ -44,7 +38,9 @@ class tdDraw {
         void setObj(tdDrawObject object) {
             obj = object;
         }
-        void setCamera() {
+        void setCamera(std::array<long double,3> new_campos,std::array<long double,2> new_camangle) {
+            campos = new_campos;
+            camangle = new_camangle;
         }
         unsigned char* getImg (int width,int height) {
             display[0] = width;display[1] = height;

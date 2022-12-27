@@ -55,6 +55,12 @@ class tdDRAW {
             let ymax = Math.min(Math.max(p1[1],p2[1],p3[1]),this.display[1]);
             let ymin = Math.max(Math.min(p1[1],p2[1],p3[1]),0);
 
+            let al = this.length3d([this.campos,t[0]]);
+            let bl = this.length3d([this.campos,t[1]]);
+            let cl = this.length3d([this.campos,t[2]]);
+            let ap = p1[2][1];
+            let bp = p2[2][1];
+            let cp = p3[2][1];
             for (let iy = ymin; iy < ymax; iy++) {
                 for (let ix = xmin; ix < xmax; ix++) {
                     let idex = iy*x+ix; // 描画するアドレス
@@ -62,15 +68,9 @@ class tdDRAW {
                         if (this.inclusion([ix,iy],[p1,p2,p3])) { // 三角形の内外判定
                             let td = this.is_p( [p1,[ix,iy]],[p2,p3]);
 
-                            let al = this.length3d([this.campos,t[0]]);
-                            let bl = this.length3d([this.campos,t[1]]);
-                            let cl = this.length3d([this.campos,t[2]]);
                             let dl = bl+(this.length2d([p2,td])/this.length2d([p2,p3]))*(cl-bl);
                             let pl = al+(this.length2d([p1,[ix,iy]])/this.length2d([p1,td]))*(dl-al);
 
-                            let ap = p1[2][1];
-                            let bp = p2[2][1];
-                            let cp = p3[2][1];
                             let dp = bp+(this.length2d([p2,td])/this.length2d([p2,p3]))*(cp-bp);
                             let pp = ap+(this.length2d([p1,[ix,iy]])/this.length2d([p1,td]))*(dp-ap);
 

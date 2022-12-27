@@ -81,21 +81,21 @@ class tdDraw {
                 int ymax = (int)std::min(std::max(std::max((long double)p1[1],(long double)p2[1]),(long double)p3[1]),(long double)display[1]);
                 int ymin = (int)std::max(std::min(std::min((long double)p1[1],(long double)p2[1]),(long double)p3[1]),(long double)0);
 
+                long double al = length3d({campos,rvars[i].t.p1});
+                long double bl = length3d({campos,rvars[i].t.p2});
+                long double cl = length3d({campos,rvars[i].t.p3});
+                long double ap = rvars[i].p1[2];
+                long double bp = rvars[i].p2[2];
+                long double cp = rvars[i].p3[2];
                 for (int iy=ymin;iy<ymax;iy++) {
                     for (int ix=xmin;ix<xmax;ix++) {
                         int idex = (height-iy)*x+ix;
                         if (inclusion((t2da){(long double)ix,(long double)iy},{p1,p2,p3})) {
                             tda td = is_p({p1,(tda){(long double)ix,(long double)iy,0.0}},{p2,p3});
 
-                            long double al = length3d({campos,t.p1});
-                            long double bl = length3d({campos,t.p2});
-                            long double cl = length3d({campos,t.p3});
                             long double dl = bl+(length2d({p2,td})/length2d({p2,p3}))*(cl-bl);
                             long double pl = al+(length2d({p1,{(long double)ix,(long double)iy,0.0}})/length2d({p1,td}))*(dl-al);
-                            
-                            long double ap = p1[2];
-                            long double bp = p2[2];
-                            long double cp = p3[2];
+
                             long double dp = bp+(length2d({p2,td})/length2d({p2,p3}))*(cp-bp);
                             long double pp = ap+(length2d({p1,{(long double)ix,(long double)iy,0.0}})/length2d({p1,td}))*(dp-ap);
 

@@ -1,3 +1,4 @@
+/* Neknaj 3D Lib - Javascript */
 /* bem130 2022 */
 /* https://github.com/neknaj/3d */
 

@@ -62,53 +62,50 @@ class tdDraw {
             trifv[3] = std::cos(camangle[1]);
 
             int numpolys = obj.size();
-            std::vector<struct rendervars> rvars(numpolys);
             for (int i=0;i<numpolys;i++) {
-                rvars[i].t = obj[i];
+                poly t = obj[i];
 
-                rvars[i].p1 = pos_3t2d(rvars[i].t.p1);
-                rvars[i].p2 = pos_3t2d(rvars[i].t.p2);
-                rvars[i].p3 = pos_3t2d(rvars[i].t.p3);
+                tda p1 = pos_3t2d(t.p1);
+                tda p2 = pos_3t2d(t.p2);
+                tda p3 = pos_3t2d(t.p3);
 
-                rvars[i].v12 = {rvars[i].t.p2[0]-rvars[i].t.p1[0],rvars[i].t.p2[1]-rvars[i].t.p1[1],rvars[i].t.p2[2]-rvars[i].t.p1[2]};
-                rvars[i].v13 = {rvars[i].t.p3[0]-rvars[i].t.p1[0],rvars[i].t.p3[1]-rvars[i].t.p1[1],rvars[i].t.p3[2]-rvars[i].t.p1[2]};
+                tda v12 = {t.p2[0]-t.p1[0],t.p2[1]-t.p1[1],t.p2[2]-t.p1[2]};
+                tda v13 = {t.p3[0]-t.p1[0],t.p3[1]-t.p1[1],t.p3[2]-t.p1[2]};
 
-                rvars[i].normal = VNormalized(VCProduct(rvars[i].v12,rvars[i].v13));
-                rvars[i].angl = VIProduct(vl,rvars[i].normal);
+                tda normal = VNormalized(VCProduct(v12,v13));
+                long double angl = VIProduct(vl,normal);
+                long double light = 0;
 
-                rvars[i].xmax = (int)std::min(std::max(std::max((long double)rvars[i].p1[0],(long double)rvars[i].p2[0]),(long double)rvars[i].p3[0]),(long double)display[0]);
-                rvars[i].xmin = (int)std::max(std::min(std::min((long double)rvars[i].p1[0],(long double)rvars[i].p2[0]),(long double)rvars[i].p3[0]),(long double)0);
-                rvars[i].ymax = (int)std::min(std::max(std::max((long double)rvars[i].p1[1],(long double)rvars[i].p2[1]),(long double)rvars[i].p3[1]),(long double)display[1]);
-                rvars[i].ymin = (int)std::max(std::min(std::min((long double)rvars[i].p1[1],(long double)rvars[i].p2[1]),(long double)rvars[i].p3[1]),(long double)0);
+                int xmax = (int)std::min(std::max(std::max((long double)p1[0],(long double)p2[0]),(long double)p3[0]),(long double)display[0]);
+                int xmin = (int)std::max(std::min(std::min((long double)p1[0],(long double)p2[0]),(long double)p3[0]),(long double)0);
+                int ymax = (int)std::min(std::max(std::max((long double)p1[1],(long double)p2[1]),(long double)p3[1]),(long double)display[1]);
+                int ymin = (int)std::max(std::min(std::min((long double)p1[1],(long double)p2[1]),(long double)p3[1]),(long double)0);
 
-            }
-            for (int i=0;i<numpolys;i++) {
-
-                long double al = length3d({campos,rvars[i].t.p1});
-                long double bl = length3d({campos,rvars[i].t.p2});
-                long double cl = length3d({campos,rvars[i].t.p3});
-                long double ap = rvars[i].p1[2];
-                long double bp = rvars[i].p2[2];
-                long double cp = rvars[i].p3[2];
-                for (int iy=rvars[i].ymin;iy<rvars[i].ymax;iy++) {
-                    for (int ix=rvars[i].xmin;ix<rvars[i].xmax;ix++) {
+                for (int iy=ymin;iy<ymax;iy++) {
+                    for (int ix=xmin;ix<xmax;ix++) {
                         int idex = (height-iy)*x+ix;
-                        if (inclusion((t2da){(long double)ix,(long double)iy},{rvars[i].p1,rvars[i].p2,rvars[i].p3})) {
-                            tda td = is_p({rvars[i].p1,(tda){(long double)ix,(long double)iy,0.0}},{rvars[i].p2,rvars[i].p3});
+                        if (inclusion((t2da){(long double)ix,(long double)iy},{p1,p2,p3})) {
+                            tda td = is_p({p1,(tda){(long double)ix,(long double)iy,0.0}},{p2,p3});
 
-                            long double dl = bl+(length2d({rvars[i].p2,td})/length2d({rvars[i].p2,rvars[i].p3}))*(cl-bl);
-                            long double pl = al+(length2d({rvars[i].p1,{(long double)ix,(long double)iy,0.0}})/length2d({rvars[i].p1,td}))*(dl-al);
+                            long double al = length3d({campos,t.p1});
+                            long double bl = length3d({campos,t.p2});
+                            long double cl = length3d({campos,t.p3});
+                            long double dl = bl+(length2d({p2,td})/length2d({p2,p3}))*(cl-bl);
+                            long double pl = al+(length2d({p1,{(long double)ix,(long double)iy,0.0}})/length2d({p1,td}))*(dl-al);
                             
-                            long double dp = bp+(length2d({rvars[i].p2,td})/length2d({rvars[i].p2,rvars[i].p3}))*(cp-bp);
-                            long double pp = ap+(length2d({rvars[i].p1,{(long double)ix,(long double)iy,0.0}})/length2d({rvars[i].p1,td}))*(dp-ap);
+                            long double ap = p1[2];
+                            long double bp = p2[2];
+                            long double cp = p3[2];
+                            long double dp = bp+(length2d({p2,td})/length2d({p2,p3}))*(cp-bp);
+                            long double pp = ap+(length2d({p1,{(long double)ix,(long double)iy,0.0}})/length2d({p1,td}))*(dp-ap);
 
                             if (pp>0&&zbuf[idex]>pl) {
                                 zbuf[idex] = pl;
                                 int index = idex*4;
-                                long double light = (std::max(rvars[i].angl,rvars[i].angl*0.1)*0.9+0.3)*(1000/(std::pow(pl,2)+1000));
-                                iarr[index+2] = rvars[i].t.color[0]*light;
-                                iarr[index+1] = rvars[i].t.color[1]*light;
-                                iarr[index+0] = rvars[i].t.color[2]*light;
+                                long double light = (std::max(angl,angl*0.1)*0.9+0.3)*(1000/(std::pow(pl,2)+1000));
+                                iarr[index+2] = t.color[0]*light;
+                                iarr[index+1] = t.color[1]*light;
+                                iarr[index+0] = t.color[2]*light;
                             }
                         }
                     }
@@ -122,15 +119,6 @@ class tdDraw {
         typedef std::array<long double,3> tda;
         typedef std::array<long double,2> t2da;
         typedef unsigned char uchar;
-        struct rendervars {
-            poly t = {{0,0,0},{0,0,0},{0,0,0},{0,0,0}};
-            tda p1 = {0,0,0};tda p2 = {0,0,0};tda p3 = {0,0,0};
-            tda v12 = {0,0,0};tda v13 = {0,0,0};
-            tda normal = {0,0,0};
-            long double angl = 0;long double light = 0;
-            int xmax = 0;int xmin = 0;
-            int ymax = 0;int ymin = 0;
-        };
         void sortPolygon() {
         }
         tda pos_3t2d(tda p) {

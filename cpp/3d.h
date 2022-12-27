@@ -8,6 +8,7 @@
 #include <cmath>
 #include <array>
 #include <vector>
+#include <thread>
 
 struct tdDrawPolygon {
     std::array<long double,3> p1;
@@ -63,24 +64,31 @@ class tdDraw {
 
             int numpolys = obj.size();
             std::vector<struct rendervars> rvars(numpolys);
+            std::vector<std::thread> threads(numpolys);
             for (int i=0;i<numpolys;i++) {
-                rvars[i].t = obj[i];
+                threads.emplace_back([&,i](){
+                    rvars[i].t = obj[i];
 
-                rvars[i].p1 = pos_3t2d(rvars[i].t.p1);
-                rvars[i].p2 = pos_3t2d(rvars[i].t.p2);
-                rvars[i].p3 = pos_3t2d(rvars[i].t.p3);
+                    rvars[i].p1 = pos_3t2d(rvars[i].t.p1);
+                    rvars[i].p2 = pos_3t2d(rvars[i].t.p2);
+                    rvars[i].p3 = pos_3t2d(rvars[i].t.p3);
 
-                rvars[i].v12 = {rvars[i].t.p2[0]-rvars[i].t.p1[0],rvars[i].t.p2[1]-rvars[i].t.p1[1],rvars[i].t.p2[2]-rvars[i].t.p1[2]};
-                rvars[i].v13 = {rvars[i].t.p3[0]-rvars[i].t.p1[0],rvars[i].t.p3[1]-rvars[i].t.p1[1],rvars[i].t.p3[2]-rvars[i].t.p1[2]};
+                    rvars[i].v12 = {rvars[i].t.p2[0]-rvars[i].t.p1[0],rvars[i].t.p2[1]-rvars[i].t.p1[1],rvars[i].t.p2[2]-rvars[i].t.p1[2]};
+                    rvars[i].v13 = {rvars[i].t.p3[0]-rvars[i].t.p1[0],rvars[i].t.p3[1]-rvars[i].t.p1[1],rvars[i].t.p3[2]-rvars[i].t.p1[2]};
 
-                rvars[i].normal = VNormalized(VCProduct(rvars[i].v12,rvars[i].v13));
-                rvars[i].angl = VIProduct(vl,rvars[i].normal);
+                    rvars[i].normal = VNormalized(VCProduct(rvars[i].v12,rvars[i].v13));
+                    rvars[i].angl = VIProduct(vl,rvars[i].normal);
 
-                rvars[i].xmax = (int)std::min(std::max(std::max((long double)rvars[i].p1[0],(long double)rvars[i].p2[0]),(long double)rvars[i].p3[0]),(long double)display[0]);
-                rvars[i].xmin = (int)std::max(std::min(std::min((long double)rvars[i].p1[0],(long double)rvars[i].p2[0]),(long double)rvars[i].p3[0]),(long double)0);
-                rvars[i].ymax = (int)std::min(std::max(std::max((long double)rvars[i].p1[1],(long double)rvars[i].p2[1]),(long double)rvars[i].p3[1]),(long double)display[1]);
-                rvars[i].ymin = (int)std::max(std::min(std::min((long double)rvars[i].p1[1],(long double)rvars[i].p2[1]),(long double)rvars[i].p3[1]),(long double)0);
-
+                    rvars[i].xmax = (int)std::min(std::max(std::max((long double)rvars[i].p1[0],(long double)rvars[i].p2[0]),(long double)rvars[i].p3[0]),(long double)display[0]);
+                    rvars[i].xmin = (int)std::max(std::min(std::min((long double)rvars[i].p1[0],(long double)rvars[i].p2[0]),(long double)rvars[i].p3[0]),(long double)0);
+                    rvars[i].ymax = (int)std::min(std::max(std::max((long double)rvars[i].p1[1],(long double)rvars[i].p2[1]),(long double)rvars[i].p3[1]),(long double)display[1]);
+                    rvars[i].ymin = (int)std::max(std::min(std::min((long double)rvars[i].p1[1],(long double)rvars[i].p2[1]),(long double)rvars[i].p3[1]),(long double)0);
+                });
+            }
+            for (auto& t : threads) {
+                try {
+                    t.join();
+                } catch (std::exception &ex) {}
             }
             for (int i=0;i<numpolys;i++) {
 

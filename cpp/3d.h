@@ -172,7 +172,7 @@ class tdDraw {
             double ab = a[0]*b[1]-a[1]*b[0];
             double bc = b[0]*c[1]-b[1]*c[0];
             double ca = c[0]*a[1]-c[1]*a[0];
-            return ab<=0&&bc<=0&&ca<=0;
+            return (ab<=0&&bc<=0&&ca<=0)||(ab>=0&&bc>=0&&ca>=0);
         }
         tda rotate3d_x(tda p) {
             return {p[0],p[1]*trifv[3]-p[2]*trifv[2],p[1]*trifv[2]+p[2]*trifv[3]};

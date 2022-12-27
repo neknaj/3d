@@ -172,7 +172,7 @@ class tdDRAW {
         let ab = a[0]*b[1]-a[1]*b[0];
         let bc = b[0]*c[1]-b[1]*c[0];
         let ca = c[0]*a[1]-c[1]*a[0];
-        return ab<=0&&bc<=0&&ca<=0;
+        return (ab<=0&&bc<=0&&ca<=0)||(ab>=0&&bc>=0&&ca>=0);
     };
     rotate3d_x(pos) { // x軸のみの回転
         return [pos[0],pos[1]*this.trifv[3]-pos[2]*this.trifv[2],pos[1]*this.trifv[2]+pos[2]*this.trifv[3]];

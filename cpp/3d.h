@@ -93,11 +93,11 @@ class tdDraw {
                         if (inclusion((t2da){(double)ix,(double)iy},{p1,p2,p3})) {
                             tda td = is_p({p1,(tda){(double)ix,(double)iy,0.0}},{p2,p3});
 
-                            double dl = bl+(length2d({p2,td})/length2d({p2,p3}))*(cl-bl);
-                            double pl = al+(length2d({p1,{(double)ix,(double)iy,0.0}})/length2d({p1,td}))*(dl-al);
+                            double l1 = length2d({p2,td})/length2d({p2,p3});
+                            double l2 = length2d({p1,{(double)ix,(double)iy,0.0}})/length2d({p1,td});
 
-                            double dp = bp+(length2d({p2,td})/length2d({p2,p3}))*(cp-bp);
-                            double pp = ap+(length2d({p1,{(double)ix,(double)iy,0.0}})/length2d({p1,td}))*(dp-ap);
+                            double pl = al+l2*(bl+l1*(cl-bl)-al);
+                            double pp = ap+l2*(bp+l1*(cp-bp)-ap);
 
                             if (pp>0&&zbuf[idex]>pl) {
                                 zbuf[idex] = pl;

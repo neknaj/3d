@@ -42,7 +42,7 @@ function loadfile(text) {
         ver2 = lines[i+2].split(" ");
         ver3 = lines[i+3].split(" ");
         if (ver0[0]=="outer"&&ver1[0]=="vertex"&&ver2[0]=="vertex"&&ver3[0]=="vertex") {
-            data.push([[Number(ver1[1]),Number(ver1[2]),Number(ver1[3])],[Number(ver2[1]),Number(ver2[2]),Number(ver2[3])],[Number(ver3[1]),Number(ver3[2]),Number(ver3[3])],[255,255,255]]);
+            data.push([[Number(ver1[1]),Number(ver1[2]),Number(ver1[3])],[Number(ver2[1]),Number(ver2[2]),Number(ver2[3])],[Number(ver3[1]),Number(ver3[2]),Number(ver3[3])],[255,255,255],[false]]);
             i+=4;
         }
     }

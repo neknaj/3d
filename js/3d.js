@@ -55,9 +55,9 @@ class tdDRAW {
             let angl = this.VIProduct(vl,normal); // 0<=normal<=1
             
             // 三角形を描画する範囲
-            let xmax = Math.min(Math.max(p1[0],p2[0],p3[0]),this.display[0]);
+            let xmax = Math.min(Math.max(p1[0],p2[0],p3[0]),x);
             let xmin = Math.max(Math.min(p1[0],p2[0],p3[0]),0);
-            let ymax = Math.min(Math.max(p1[1],p2[1],p3[1]),this.display[1]);
+            let ymax = Math.min(Math.max(p1[1],p2[1],p3[1]),y);
             let ymin = Math.max(Math.min(p1[1],p2[1],p3[1]),0);
 
             let al = this.length3d([this.campos,t[0]]);
